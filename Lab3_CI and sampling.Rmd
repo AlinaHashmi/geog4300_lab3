@@ -10,7 +10,7 @@ library(tidyverse)
 
 ## Confidence intervals
 
-**Your name: {Name here}**
+**Your name: Alina Hashmi**
 
 **Overview:**
 
@@ -44,6 +44,20 @@ In the first part of this lab, you'll determine a confidence interval for Washin
 **Task 1** _Load the data and filter it to just include data for the state of Washington. Then create a table showing mean precipitation, standard deviation, number of observations (sample size), and upper/lower confidence interval bounds for each of the two time periods in the `time_range` field. Use `kable` to display the table when you are done._
 
 ```{r Task1}
+washington1950 <- era5_data %>%
+  filter(st_name == "Washington", time_range == "1950-69")
+
+washington2005 <- era5_data %>%
+  filter(st_name == "Washington", time_range == "2005-24")
+
+washington_stats <- washington1950 %>%
+  summarize(mean_precip = mean(prcp_m), sd_precip = sd(prcp_m), n = n()) %>%
+  mutate(time_range = "1950-69")
+
+washington_stats <- washington2005 %>%
+  summarize(mean_precip = mean(prcp_m), sd_precip = sd(prcp_m), n = n()) %>%
+  mutate(time_range = "2005-24")
+
 
 ```
 
