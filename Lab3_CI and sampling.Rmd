@@ -53,11 +53,15 @@ washington2005 <- era5_data %>%
 washington_stats <- washington1950 %>%
   summarize(mean_precip = mean(prcp_m), sd_precip = sd(prcp_m), n = n()) %>%
   mutate(time_range = "1950-69") %>%
-  bind_rows(washington2005 %>%
+  bind_rows(
+    washington2005 %>%
   summarize(mean_precip = mean(prcp_m), sd_precip = sd(prcp_m), n = n()) %>%
-  mutate(time_range = "2005-24"))
+  mutate(time_range = "2005-24")
+  )
 
-
+washington_stats <- washington_stats %>%
+  mutate(lower_CI = mean_precip - ((sd_precip/sqrt(n)) * qnorm(0.975))) %>%
+  mutate(upper_CI = mean_precip + ((sd_precip/sqrt(n)) * qnorm(0.975)))
 ```
 
 Using the code provided in class, create a ggplot graphic that visualizes these two confidence intervals. You'll want to use `geom_point` and `geom_linerange` to do so. Use states as the y-axis and mean precipitation as the x axis. Vary the color and position of the dots and lines for the mean/CI by the `time_range` variable. Feel free to also experiment with axis labels/themes to make the graph more appealing and accessible.
@@ -65,7 +69,12 @@ Using the code provided in class, create a ggplot graphic that visualizes these 
 **Task 2** _Create a ggplot graphic as described above to show the confidence intervals for precipitation in Washington for each time range._
 
 ```{r Task3}
+ggplot(washington_stats %>% 
+         geom_linerange(aes(xmin=lower_CI, xmax = upper_CI, y = )))
 
+ggplot(cps_data_south_summary %>% mutate(STATE=reorder(STATE,earn_mean)))+
+  geom_linerange(aes(xmin=ci_low,xmax=ci_high,y=STATE,group=STATE)) +
+  geom_point(aes(x=earn_mean,y=STATE))
 ```
 
 **Task 3** _Interpret your table and graph. What do they tell us about the change in Washington's precipitation during this time?_
