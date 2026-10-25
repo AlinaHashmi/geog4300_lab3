@@ -69,12 +69,23 @@ Using the code provided in class, create a ggplot graphic that visualizes these 
 **Task 2** _Create a ggplot graphic as described above to show the confidence intervals for precipitation in Washington for each time range._
 
 ```{r Task3}
-ggplot(washington_stats %>% 
-         geom_linerange(aes(xmin=lower_CI, xmax = upper_CI, y = )))
+washington_stats <- washington_stats %>%
+  mutate(state = "Washington")
 
-ggplot(cps_data_south_summary %>% mutate(STATE=reorder(STATE,earn_mean)))+
-  geom_linerange(aes(xmin=ci_low,xmax=ci_high,y=STATE,group=STATE)) +
-  geom_point(aes(x=earn_mean,y=STATE))
+ggplot(washington_stats, aes(y = reorder(state, mean_precip), color = time_range)) +
+  geom_linerange(
+    aes(xmin = lower_CI, xmax = upper_CI)
+  ) +
+  geom_point(
+    aes(x = mean_precip)
+  ) +
+  labs(
+    title = "Comparison of Mean Precipation Confidence Intervals for Washington",
+    x = "Mean Precipitation",
+    y= "State",
+    color = "Time Range"
+  )
+  theme(legend.position = "bottom")
 ```
 
 **Task 3** _Interpret your table and graph. What do they tell us about the change in Washington's precipitation during this time?_
