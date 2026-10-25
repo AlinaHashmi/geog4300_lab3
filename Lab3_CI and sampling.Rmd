@@ -85,7 +85,6 @@ ggplot(washington_stats, aes(y = reorder(state, mean_precip), color = time_range
     y= "State",
     color = "Time Range"
   )
-  theme(legend.position = "bottom")
 ```
 
 **Task 3** _Interpret your table and graph. What do they tell us about the change in Washington's precipitation during this time?_
@@ -119,9 +118,15 @@ washington_county <- washington_county %>%
 **Task 5** _Visualize the confidence intervals for the county-level data you generated in task 4, using the same style as you did for Task 2 above. For an optional extra challenge, visually highlight the counties where the confidence intervals between time periods do NOT overlap._
 
 ```{r Task6}
-ggplot(washington_county) +
-  geom_linerange(aes(xmin=lower_CI,xmax=upper_CI,y=reorder(cty_name,mean_precip))) +
-  geom_point(aes(x=mean_precip, y=cty_name))
+ggplot(washington_county, aes(y = reorder(cty_name, mean_precip), color = time_range)) +
+  geom_linerange(aes(xmin = lower_CI, xmax = upper_CI)) +
+  geom_point(aes(x = mean_precip)) +
+  labs(
+    title = "Comparison of Mean Precipation Confidence Intervals for Counties in Washington",
+    x = "Mean Precipitation",
+    y= "County",
+    color = "Time Range"
+  )
 ```
 
 **Task 6**: _Compare the size of the error terms for your county level data to the error terms at state level that you calculated in Task 1. Are they bigger or smaller? Explain why the formula you used for calculating the error terms produced error terms of different sizes. How is this difference visible in your ggplot graphs?_
