@@ -119,7 +119,13 @@ washington_county <- washington_county %>%
 **Task 5** _Visualize the confidence intervals for the county-level data you generated in task 4, using the same style as you did for Task 2 above. For an optional extra challenge, visually highlight the counties where the confidence intervals between time periods do NOT overlap._
 
 ```{r Task6}
+ggplot(washington_county) +
+  geom_linerange(aes(xmin=lower_CI,xmax=upper_CI,y=reorder(cty_name,mean_precip))) +
+  geom_point(aes(x=mean_precip, y=cty_name))
 
+ggplot(cps_data_hisp) +
+  geom_linerange(aes(xmin=ci_low,xmax=ci_high,y=reorder(STATE,mex_pct),group=STATE))+
+  geom_point(aes(x=mex_pct,y=STATE))
 ```
 
 **Task 6**: _Compare the size of the error terms for your county level data to the error terms at state level that you calculated in Task 1. Are they bigger or smaller? Explain why the formula you used for calculating the error terms produced error terms of different sizes. How is this difference visible in your ggplot graphs?_
