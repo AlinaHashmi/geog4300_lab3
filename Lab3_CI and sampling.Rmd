@@ -62,6 +62,8 @@ washington_stats <- washington1950 %>%
 washington_stats <- washington_stats %>%
   mutate(lower_CI = mean_precip - ((sd_precip/sqrt(n)) * qnorm(0.975))) %>%
   mutate(upper_CI = mean_precip + ((sd_precip/sqrt(n)) * qnorm(0.975)))
+
+kable(head(washington_stats))
 ```
 
 Using the code provided in class, create a ggplot graphic that visualizes these two confidence intervals. You'll want to use `geom_point` and `geom_linerange` to do so. Use states as the y-axis and mean precipitation as the x axis. Vary the color and position of the dots and lines for the mean/CI by the `time_range` variable. Feel free to also experiment with axis labels/themes to make the graph more appealing and accessible.
@@ -113,6 +115,8 @@ washington_county <- washington1950 %>%
 washington_county <- washington_county %>%
   mutate(lower_CI = mean_precip - ((sd_precip/sqrt(n)) * qnorm(0.975))) %>%
   mutate(upper_CI = mean_precip + ((sd_precip/sqrt(n)) * qnorm(0.975)))
+
+kable(head(washington_county))
 ```
 
 **Task 5** _Visualize the confidence intervals for the county-level data you generated in task 4, using the same style as you did for Task 2 above. For an optional extra challenge, visually highlight the counties where the confidence intervals between time periods do NOT overlap._
@@ -131,12 +135,21 @@ ggplot(washington_county, aes(y = reorder(cty_name, mean_precip), color = time_r
 
 **Task 6**: _Compare the size of the error terms for your county level data to the error terms at state level that you calculated in Task 1. Are they bigger or smaller? Explain why the formula you used for calculating the error terms produced error terms of different sizes. How is this difference visible in your ggplot graphs?_
 
-{Your response here.}
+Counties in Washington that experienced a higher sample mean had a larger confidence interval compared to the counties that had a smaller sample mean. This could be due to the data being more varied since each county had the same sample size. Compared to the state's summary statistics, the county data still had a greater interval with the smallest interval having a mean of 0.0377 and a lower confidence interval of 0.0311 and upper confidence interval of 0.0445. This could also be attributed to the sample size as each county had 20 observations while the state had 780 observations. The formula for standard error divides the standard deviation by the sample size, so the standard error can either be affected by variation in the data or the size of the data. Since the counties shared the same sample size, the difference in the margin of errors between the counties is more likely due to some counties having more variation in their data. On the other hand, since the difference in the sample size was so drastic between the counties and state data, the difference in the margin of error is more likely due to the sample size. The difference can be seen by the long horizontal lines that stretch out of the point. While the lines in the state graph are somewhat long, the interval for the x-axis is much smaller than the x-axis on the counties graph. 
 
 **Task 7**: _Transform the county data from task 4 into wide format so that the means for each time period are in the same row for each county. Then calculate the change in precipitation between the time periods. Join this table to the geopackage file that contains county boundaries and census data, making sure that you only have Washington counties included - use the geopackage `data/acsdata_cty_westreg.gpkg`. Then use `tmap` to map out the difference in precipitation means across the two time periods. Make sure the legend of this map is interpretable._
 
 ```{r Task7}
+washington_county_wide <- washington_county %>%
+  pivot_wider(
+    names_from = time_range,
+    values_from = c(mean_precip, sd_precip, lower_CI, upper_CI)
+  ) 
 
+washington_county_wide <- washington_county_wide %>%
+  mutate(change_in_precip = `mean_precip_2005-24` - `mean_precip_1950-69`)
+
+kable(head(washington_county_wide))
 ```
 
 
