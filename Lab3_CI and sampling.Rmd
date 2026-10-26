@@ -89,7 +89,7 @@ ggplot(washington_stats, aes(y = reorder(state, mean_precip), color = time_range
 
 **Task 3** _Interpret your table and graph. What do they tell us about the change in Washington's precipitation during this time?_
 
-{Your response here.}
+In the time interval 1950-69, the state of Washington had an average of 0.203 meters of precipitation for the sample dataset. Based on our confidence intervals, we are 95% confident that the true mean for the entire state of Washington falls between 0.192 meters and 0.214 meters of precipitation, given by the lower and upper confidence intervals found. On the other hand, the 2005-24 observations had an average of 0.166 meters of percipitation for the sample dataset. Based on the confidence interval found, we are 95% sure that the true mean for the entire state of Washington falls between 0.158 and 0.175 meters of precipitation. The 1950-1969 observations had a standard deviation of 0.156 while the 2005-24 observations had a standard deviation of 0.123. This let's us know that the data for the 1950-69 observations were more varied since the two datasets had the same sample size. Additionally, Washington experienced greater precipitation in the years between 1950 and 1969 compared to 2005-24 as the upper interval for the 2005-24 sample does not even overlap with the lower interval for the 1950-69 sample. 
 
 # Part 2: Analyzing county data in Washington.
 In part 1, you ran a state level analysis. What if you wanted to identify where populations might be negatively affected by precipitation changes within a state? In this section, you'll look at the changes in precipitation **at county level** in Washington to 
