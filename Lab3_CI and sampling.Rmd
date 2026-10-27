@@ -179,7 +179,13 @@ Now that you've calculated these means and confidence intervals, let's identify 
 **Task 8** _Create a dummy variable for counties with a change of 0.05 meters or more between the time periods. Calculate how many people currently live in these counties along with the mean value of median income (medinc) and poverty rate (pov_pop_pct) for those areas._
 
 ```{r Task 10}
+washington_affected <- washington_spatial_join %>%
+  st_drop_geometry() %>%
+  mutate(flag = if_else(change_in_precip <= -0.05, 1, 0))
 
+washington_affected_1 <- washington_affected %>%
+  group_by(flag) %>%
+  summarize(tot_pop = sum(totpop_race), mean_income = mean(medinc), mean_pov = mean(pov_pop_pct))
 ```
 
 **Task 9** _Create a one paragraph summary of your results from tasks 7 and 8. What do you learn about how precipitation has changed in the last 70 years across the state of Washington? How would you describe the population affected by large drops in precipitation based on your results?_
