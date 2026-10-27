@@ -7,6 +7,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(sf)
+library(tmap)
 ```
 
 ## Confidence intervals
@@ -155,6 +156,16 @@ washington_spatial <- st_read("data/acsdata_cty_westreg.gpkg") %>%
   filter(st_name == "Washington")
 
 washington_spatial_join <- left_join(washington_spatial, washington_county_wide, by = "cty_name")
+
+tm_shape(washington_spatial_join) +
+  tm_polygons(
+    fill = "change_in_precip",
+    fill.scale = tm_scale_intervals(style = "jenks"),
+    title = "Change in Precipitation"
+  ) + 
+  tm_layout(
+    main.title = "Change in Precipitation in Washington between 1950-69 and 2005-24"
+  )
 ```
 
 
