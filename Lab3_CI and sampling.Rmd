@@ -6,6 +6,7 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(sf)
 ```
 
 ## Confidence intervals
@@ -149,7 +150,11 @@ washington_county_wide <- washington_county %>%
 washington_county_wide <- washington_county_wide %>%
   mutate(change_in_precip = `mean_precip_2005-24` - `mean_precip_1950-69`)
 
-kable(head(washington_county_wide))
+washington_spatial <- st_read("data/acsdata_cty_westreg.gpkg") %>% 
+  st_transform(2286) %>%
+  filter(st_name == "Washington")
+
+washington_spatial_join <- left_join(washington_spatial, washington_county_wide, by = "cty_name")
 ```
 
 
