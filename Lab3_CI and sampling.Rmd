@@ -190,7 +190,7 @@ washington_affected_1 <- washington_affected %>%
 
 **Task 9** _Create a one paragraph summary of your results from tasks 7 and 8. What do you learn about how precipitation has changed in the last 70 years across the state of Washington? How would you describe the population affected by large drops in precipitation based on your results?_
 
-{Your response here.}
+Over the last 70 years, precipitation has changed unevenly in the state of Washington. The areas with the most change is the eastern side of Washington along the shores while the western side of Washington had remained relatively the same. About a million less people in Washington are affected by large drops in precipitation than those who are not affected. Additionally, areas that have received the greatest change in precipitation does not affect socially vulnerable areas. The median income for those affected is $76,272 with a mean poverty rate of 11.3% and $70,041 for those not affected with a mean poverty rate of 13%. This is around the national average.
 
 
 Small multiples or multi-panel maps are often a helpful way to show change over time. See this page for more information about how these are created in `tmap`:
@@ -202,11 +202,20 @@ Using these tools, create a small multiples map of your precipitation data for c
 In addition, describe two interesting trends you see in the figure you created.
 
 ```{r challenge, dpi=300}
+washington_40 <- bind_rows(washington1950, washington2005)
 
+washington_40_spatial <- washington_spatial %>%
+  left_join(washington_40, by = "cty_name")
 
+washington_40_map <- tm_shape(washington_40_spatial) +
+  tm_polygons(fill = "prcp_m", fill.free = FALSE, title = "Precipitation in Meters") +
+  tm_facets_wrap(by = "year", ncols = 8) +
+  tm_layout(asp = 0, main.title = "Precipitation in Washington Over 40 Years")
+
+tmap_save(washington_40_map, filename = "washington_40year_trends.pdf", width = 16, height = 10, units = "in")
 ```
 
-{Your response here.}
+One interesting trend that I noticed was that eastern side of Washington has had significantly lower amounts of precipitation compared to the western part of Washington. The eastern side continuously averaged about 0.0 meters to 0.1 meters of precipitation every year. Another trend that I noticed was that the precipitation on the western side of Washington has been on a steady decline over the past 40 years. Apart from 2006 and 2020, the average precipitation in this area has gone from around 0.4 meters of precipitation to about 0.2 meters.
 
 
 
@@ -214,8 +223,8 @@ In addition, describe two interesting trends you see in the figure you created.
 
 **Disclosure of assistance:** Besides class materials, what other sources of assistance did you use while completing this lab? These can include input from classmates, relevant material identified through web searches (e.g., Stack Overflow), or assistance from ChatGPT or other AI tools. How did these sources support your own learning in completing this lab?
 
-{Response here.}
+I used Google's AI overview to assist me in using bind_rows() to join two tables together. I also used it to help explain the multi-panel maps tool particularly in regards to laying out the maps in a legible way.  
 
 **Lab reflection:** How do you feel about the work you did on this lab? Was it easy, moderate, or hard? What are the biggest things you learned by completing it?
 
-{Your response here}
+I feel good about the work I did on this lab. I found it a bit more challenging than the previous labs. I learned new ways to organize and create tables and became more comfortable working with spatial data. Additionally, I learned how to create a multi-panel map as well as a line range plot.
